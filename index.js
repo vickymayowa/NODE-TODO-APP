@@ -16,20 +16,39 @@ mongoose.connect(URI)
 })
 
 app.get("/todo",(req,res)=>{
-    console.log("User Visted The Page")
+    console.log("User is adding a todo")
     res.render("todo")
+})
+
+app.get("/todolist",(req,res)=>{
+  console.log("User Checked the Todo Page")
+  res.render("todolist")
+  userModel.find()
+  .then((response) => {
+      // console.log(response);
+      console.log("User Accessed the DashBoard")
+      res.render("dashboard", {response})
+  })
+  .catch((err) => {
+  console.log(err)
+})
 })
 
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.set('view engine','ejs')
 
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth() + 1;
+const day = now.getDate();
+const dateString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+console.log(`Todays Date is ${dateString}`);
 
 let userSchema = {
     todoName:{type:String, required:true},
     todoDescription:{type:String, required:true,unique:true},
-    myDate:{type:Date,required:true},
-    myDate: new Date()
+    myDate:{type:String,required:true},
 }
 
 let userModel = mongoose.model("TodoApp", userSchema)
@@ -40,11 +59,10 @@ app.post("/user",(req,res)=>{
     console.log(form)
     form.save()
     .then((response)=>{
-    //   res.redirect("/signin")
-      res.render("user",{message:"Registration Completed"})
-      console.log("SuccessFully Saved into the Database");
       console.log(response)
-      res.render("todo",{message:"Registration Completed"})
+      res.render("todo", { message : "Todo Added Successfully" })
+      console.log("SuccessFully Saved into the Database");
+      // res.render("todo",{message:"Registration Completed"})
     })
     .catch((error)=>{
         console.log(error)
