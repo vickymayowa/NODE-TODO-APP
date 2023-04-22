@@ -25,7 +25,7 @@ app.get("/todolist",(req,res)=>{
   res.render("todolist")
   userModel.find()
   .then((response) => {
-      // console.log(response);
+      console.log(response);
       console.log("User Accessed the DashBoard")
       res.render("dashboard", {response})
   })
