@@ -23,11 +23,12 @@ app.get("/todo",(req,res)=>{
 app.get("/todolist",(req,res)=>{
   console.log("User Checked the Todo Page")
   res.render("todolist")
+  console.log("Todolist about to be checked")
   userModel.find()
   .then((response) => {
       console.log(response);
       console.log("User Accessed the DashBoard")
-      res.render("dashboard", {response})
+      res.render("todolist", {response})
   })
   .catch((err) => {
   console.log(err)
@@ -38,8 +39,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.set('view engine','ejs')
 
-
-
+    // UserSchema
 let userSchema = {
     todoName:{type:String, required:true},
     todoDescription:{type:String, required:true,unique:true},
@@ -52,7 +52,7 @@ app.post("/edit",(req,res)=>{
   userModel.findOne({todo:req.body.todoName})
   .then((response)=>{
       console.log(response);
-      res.render("editUser", {response:response})
+      res.render("editUser", {response})
   })
 })
 
