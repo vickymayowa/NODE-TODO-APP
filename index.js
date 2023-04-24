@@ -38,12 +38,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.set('view engine','ejs')
 
-const now = new Date();
-const year = now.getFullYear();
-const month = now.getMonth() + 1;
-const day = now.getDate();
-const dateString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-console.log(`Todays Date is ${dateString}`);
+
 
 let userSchema = {
     todoName:{type:String, required:true},
@@ -52,6 +47,29 @@ let userSchema = {
 }
 
 let userModel = mongoose.model("TodoApp", userSchema)
+
+app.post("/edit",(req,res)=>{
+  userModel.findOne({todo:req.body.todoName})
+  .then((response)=>{
+      console.log(response);
+      res.render("editUser", {response:response})
+  })
+})
+
+    // delete function 
+
+app.post("/delete",(req,res)=>{
+  userModel.findOneAndDelete({todo:req.body.todoName})
+  .then((response)=>{
+    console.log(response);
+    res.redirect("dashboard")
+    console.log("Deleted SuccessFully");
+    console.log("User Deleted a Todo list")
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+})
 
 app.post("/user",(req,res)=>{
     console.log(req.body);
@@ -76,3 +94,11 @@ app.listen("3000",()=>{
     console.log("Server Started...............")
     console.log("Server Started on port 3000")
 })
+
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth() + 1;
+const day = now.getDate();
+const dateString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+console.log(`Todays Date is ${dateString}`);

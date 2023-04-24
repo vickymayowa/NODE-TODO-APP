@@ -12,7 +12,7 @@
     <div class="container-fluid col-11 col-md-5 my-2 p-4 shadow-5 shadow mt-5 rounded">
         <div class="row">
             <h1 class="text-dark m-0 fw-lighter text-center">Todo List</h1>
-            <% if (response.length > 0) { %>
+                <% if (response.length > 0) { %>
                 <table class="table table-bordered table-hover-primary table-striped border-dangeborder-info">
                     <tr>
                         <th>S/N</th>
@@ -20,7 +20,6 @@
                         <th>Todo Description</th>
                         <th>ACTIONS</th>
                     </tr>
-            
                     <% for (let index = 0; index < response.length; index++) { %>
                         <tr>
                             <td><%= index+1 %></td>
@@ -28,12 +27,22 @@
                             <td><%= response[index].todoDescription %></td>
                             <td><%= response[index].myDate %></td>
                             <td>
+                                <form action="/delete" method="post">
+                                    <input type="Hidden" name="userEmail" value="<%= response[index].todoName %>">
+                                    <button type="submit" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                    </svg></button>
+                                </form>
+                                <form action="/edit" method="post">
+                                    <input type="hidden" name="userEmail" value="<%= response[index].todoName %>">
+                                    <button type="submit" class="btn btn-warning">Edit</button>
+                            </form>
                             </td>
                         </tr>
                         <% } %>
                 </table>
                 <% } else {%>
-                    <div class="text-center alert alert-dark">No Todo added yet</div>
+                    <div class="text-center alert alert-dark">No Todo List Added yet</div>
                 <%}%>
         </div>
     </div>
