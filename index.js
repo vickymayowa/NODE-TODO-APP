@@ -6,17 +6,21 @@ const app = express();
 const URI = "mongodb+srv://favouradebanjo603:oluyomiadebanjo@cluster0.ae47tji.mongodb.net/TodoProject_db?retryWrites=true&w=majority"
 mongoose.connect(URI)
 
-.then(()=>{
-  console.log("Mongoose HandShake Approved");
-  console.log("Mongoose Activated Connected");
-})
-.catch((err)=>{
-  console.log("Mongoose Handshake Disconnected");
- //console.log(err);
-})
+.then(()=>{console.log("Mongoose Activated Connected")})
+.catch((err)=>{console.log("Mongoose Handshake Disconnected");})
+
+    // UserSchema
+    let userSchema = {
+      todoName:{type:String, required:true},
+      todoDescription:{type:String, required:true},
+      myDate:{type:String,required:true},
+  }
+  
+  let userModel = mongoose.model("TodoApp", userSchema)
+  
 
 app.get("/todo",(req,res)=>{
-    console.log("User is adding a todo")
+    console.log("User is adding a todo list")
     res.render("todo")
 })
 
@@ -38,15 +42,6 @@ app.get("/todolist",(req,res)=>{
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.set('view engine','ejs')
-
-    // UserSchema
-let userSchema = {
-    todoName:{type:String, required:true},
-    todoDescription:{type:String, required:true,unique:true},
-    myDate:{type:String,required:true},
-}
-
-let userModel = mongoose.model("TodoApp", userSchema)
 
 app.post("/edit",(req,res)=>{
   userModel.findOne({todo:req.body.todoName})
@@ -71,7 +66,7 @@ app.post("/delete",(req,res)=>{
   })
 })
 
-app.post("/user",(req,res)=>{
+app.post("/todo",(req,res)=>{
     console.log(req.body);
     let form = new userModel(req.body)
     console.log(form)
